@@ -5,7 +5,7 @@ from open_seq2seq.decoders import FullyConnectedCTCDecoder
 from open_seq2seq.data import Speech2TextDataLayer
 from open_seq2seq.losses import CTCLoss
 from open_seq2seq.optimizers.lr_policies import poly_decay
-
+from open_seq2seq.utils.activations import glu
 
 base_model = Speech2Text
 
@@ -15,7 +15,7 @@ base_params = {
   "num_epochs": 60,
 
   "num_gpus": 8,
-  "batch_size_per_gpu": 32,
+  "batch_size_per_gpu": 64,
 
   "save_summaries_steps": 100,
   "print_loss_steps": 10,
@@ -33,13 +33,13 @@ base_params = {
 
   "regularizer": tf.contrib.layers.l2_regularizer,
   "regularizer_params": {
-    'scale': 0.0005
+    'scale': 0.0001
   },
 
   "max_grad_norm": 15.0,
-  #"dtype": tf.float32,
-  "dtype": "mixed",
-  "loss_scaling": "Backoff", 
+  "dtype": tf.float32,
+  #"dtype": "mixed",
+  #"loss_scaling": "Backoff", 
 
   "summaries": ['learning_rate', 'variables', 'gradients', 'larc_summaries',
                 'variable_norm', 'gradient_norm', 'global_gradient_norm'],
@@ -84,13 +84,14 @@ base_params = {
       },
     ],
 
-    "dropout_keep_prob": 0.8,
+    "dropout_keep_prob": 0.7,
 
     "initializer": tf.contrib.layers.xavier_initializer,
     "initializer_params": {
       'uniform': False,
     },
     "activation_fn": lambda x: tf.minimum(tf.nn.relu(x), 20.0),
+    #"activation_fn": lambda x: glu(x),
     "data_format": "channels_last",
   },
 
