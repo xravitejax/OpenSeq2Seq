@@ -33,7 +33,7 @@ base_params = {
 
   "regularizer": tf.contrib.layers.l2_regularizer,
   "regularizer_params": {
-    'scale': 0.0001
+    'scale': 0.0005
   },
 
   "max_grad_norm": 15.0,
@@ -84,14 +84,14 @@ base_params = {
       },
     ],
 
-    "dropout_keep_prob": 0.7,
+    "dropout_keep_prob": 0.9,
 
     "initializer": tf.contrib.layers.xavier_initializer,
     "initializer_params": {
       'uniform': False,
     },
-    "activation_fn": lambda x: tf.minimum(tf.nn.relu(x), 20.0),
-    #"activation_fn": lambda x: glu(x),
+    #"activation_fn": lambda x: tf.minimum(tf.nn.relu(x), 20.0),
+    "activation_fn": lambda x: glu(x),
     "data_format": "channels_last",
   },
 
