@@ -83,7 +83,7 @@ base_params = {
       },
       {
         "type": "conv1d", "repeat" : 1,
-        "kernel_size": [29], "stride": [1],
+        "kernel_size": [31], "stride": [1],
         "num_channels": 896, "padding": "SAME"
       },
       {
