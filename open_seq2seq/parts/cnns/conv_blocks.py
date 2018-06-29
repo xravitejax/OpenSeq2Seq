@@ -68,7 +68,7 @@ def conv_bn_actv(type, name, inputs, filters, kernel_size, activation_fn, stride
   # To-Do check if batchnorm works smoothly for >4 dimensional tensors
   squeeze = False
   if type == "conv1d":
-    conv = tf.expand_dims(conv, axis=-1)  # NWC --> NHWC
+    conv = tf.expand_dims(conv, axis=1)  # NWC --> NHWC
     squeeze = True
 
   bn = tf.layers.batch_normalization(
@@ -82,7 +82,7 @@ def conv_bn_actv(type, name, inputs, filters, kernel_size, activation_fn, stride
   )
 
   if squeeze:
-    bn = tf.squeeze(bn, axis=-1)
+    bn = tf.squeeze(bn, axis=1)
 
   output = bn
   if activation_fn is not None:
