@@ -52,39 +52,24 @@ base_params = {
   "encoder_params": {
     "convnet_layers": [
       {
-        "type": "conv1d", "repeat" : 4,
+        "type": "conv1d", "repeat" : 9,
         "kernel_size": [7], "stride": [1],
         "num_channels": 256, "padding": "SAME"
       },
       {
-        "type": "conv1d", "repeat" : 3,
+        "type": "conv1d", "repeat" : 7,
+        "kernel_size": [9], "stride": [1],
+        "num_channels": 384, "padding": "SAME"
+      },
+      {
+        "type": "conv1d", "repeat" : 5,
         "kernel_size": [11], "stride": [1],
-        "num_channels": 256, "padding": "SAME"
+        "num_channels": 512, "padding": "SAME"
       },
       {
         "type": "conv1d", "repeat" : 3,
-        "kernel_size": [15], "stride": [1],
-        "num_channels": 256, "padding": "SAME"
-      },
-      {
-        "type": "conv1d", "repeat" : 2,
-        "kernel_size": [19], "stride": [1],
-        "num_channels": 512, "padding": "SAME"
-      },
-      {
-        "type": "conv1d", "repeat" : 2,
-        "kernel_size": [23], "stride": [1],
-        "num_channels": 512, "padding": "SAME"
-      },
-      {
-        "type": "conv1d", "repeat" : 1,
-        "kernel_size": [27], "stride": [1],
-        "num_channels": 768, "padding": "SAME"
-      },
-      {
-        "type": "conv1d", "repeat" : 1,
-        "kernel_size": [31], "stride": [1],
-        "num_channels": 768, "padding": "SAME"
+        "kernel_size": [13], "stride": [1],
+        "num_channels": 784, "padding": "SAME"
       },
       {
         "type": "conv1d", "repeat" : 1,
