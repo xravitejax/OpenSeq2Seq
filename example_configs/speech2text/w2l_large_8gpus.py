@@ -99,7 +99,7 @@ base_params = {
     "initializer_params": {
       'uniform': False,
     },
-    "normalization" : "batch_norm",
+    "normalization" : "group_norm",
     "activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
     "data_format": "channels_last",
   },
