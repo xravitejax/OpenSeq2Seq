@@ -5,7 +5,7 @@ from open_seq2seq.decoders import FullyConnectedCTCDecoder
 from open_seq2seq.data import Speech2TextDataLayer
 from open_seq2seq.losses import CTCLoss
 from open_seq2seq.optimizers.lr_policies import poly_decay
-
+from open_seq2seq.utils.activations import glu
 
 base_model = Speech2Text
 
@@ -100,7 +100,8 @@ base_params = {
       'uniform': False,
     },
     "normalization" : "group_norm",
-    "activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
+    #"activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
+    "activation_fn" : lambda x: glu(x),
     "data_format": "channels_last",
   },
 
