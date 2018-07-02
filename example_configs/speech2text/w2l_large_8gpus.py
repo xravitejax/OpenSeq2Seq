@@ -101,7 +101,7 @@ base_params = {
     },
     "normalization" : "group_norm",
     #"activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
-    "activation_fn" : lambda x: glu(x),
+    "activation_fn" : glu,
     "data_format": "channels_last",
   },
 
