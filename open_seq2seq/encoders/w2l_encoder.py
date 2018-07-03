@@ -24,7 +24,7 @@ class Wave2LetterEncoder(Encoder):
   def get_optional_params():
     return dict(Encoder.get_optional_params(), **{
         'data_format': ['channels_first', 'channels_last'],
-        'normalization': [None, 'batch_norm', 'group_norm'],
+        'normalization': [None, 'batch_norm', 'group_norm', 'weight_norm'],
         'bn_momentum': float,
         'bn_epsilon': float,
     })
@@ -114,6 +114,8 @@ class Wave2LetterEncoder(Encoder):
       normalization_params['bn_momentum'] = self.params.get(
           'bn_momentum', 0.90)
       normalization_params['bn_epsilon'] = self.params.get('bn_epsilon', 1e-3)
+    elif normalization == "weight_norm":
+      conv_block = conv_wn_actv
 
     conv_inputs = source_sequence
     batch_size = conv_inputs.get_shape().as_list()[0]

@@ -21,6 +21,5 @@ def glu(features, axis=-1, name=None):
     pre_activations, gate_inputs = tf.split(
         features, num_or_size_splits=2, axis=axis)
     gate_outputs = tf.sigmoid(gate_inputs)
-    print(gate_outputs)
     features_nonlinear = tf.multiply(pre_activations, gate_outputs)
   return features_nonlinear
