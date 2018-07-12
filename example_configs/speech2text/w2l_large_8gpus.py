@@ -31,7 +31,7 @@ base_params = {
   "lr_policy": poly_decay,
   "lr_policy_params": {
     "learning_rate": 0.001,
-    "power": 0.5,
+    "power": 2.0,
   },
   "larc_params": {
     "larc_eta": 0.001,
@@ -99,7 +99,7 @@ base_params = {
     "initializer_params": {
       'uniform': False,
     },
-    "normalization" : "group_norm",
+    "normalization" : "batch_norm",
     #"activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
     "activation_fn" : glu,
     "data_format": "channels_last",
@@ -108,7 +108,7 @@ base_params = {
   "decoder": FullyConnectedCTCDecoder,
   "decoder_params": {
     "initializer": tf.contrib.layers.xavier_initializer,
-    "use_language_model": True,
+    "use_language_model": False,
 
     # params for decoding the sequence with language model
     "beam_width": 512,
@@ -128,7 +128,7 @@ base_params = {
 train_params = {
   "data_layer": Speech2TextDataLayer,
   "data_layer_params": {
-    "num_audio_features": 40,
+    "num_audio_features": 64,
     "input_type": "logfbank",
     "vocab_file": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
     "dataset_files": [
@@ -143,7 +143,7 @@ train_params = {
 eval_params = {
   "data_layer": Speech2TextDataLayer,
   "data_layer_params": {
-    "num_audio_features": 40,
+    "num_audio_features": 64,
     "input_type": "logfbank",
     "vocab_file": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
     "dataset_files": [
@@ -156,7 +156,7 @@ eval_params = {
 infer_params = {
   "data_layer": Speech2TextDataLayer,
   "data_layer_params": {
-    "num_audio_features": 40,
+    "num_audio_features": 64,
     "input_type": "logfbank",
     "vocab_file": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
     "dataset_files": [
