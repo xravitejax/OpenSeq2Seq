@@ -31,7 +31,7 @@ base_params = {
   "lr_policy": poly_decay,
   "lr_policy_params": {
     "learning_rate": 0.001,
-    "power": 0.5,
+    "power": 2.0,
   },
   "larc_params": {
     "larc_eta": 0.001,
@@ -52,44 +52,39 @@ base_params = {
   "encoder_params": {
     "convnet_layers": [
       {
-        "type": "conv1d", "repeat" : 4,
-        "kernel_size": [7], "stride": [1],
-        "num_channels": 256, "padding": "SAME"
-      },
-      {
         "type": "conv1d", "repeat" : 3,
         "kernel_size": [11], "stride": [1],
         "num_channels": 256, "padding": "SAME"
       },
       {
         "type": "conv1d", "repeat" : 3,
-        "kernel_size": [15], "stride": [1],
-        "num_channels": 256, "padding": "SAME"
+        "kernel_size": [13], "stride": [1],
+        "num_channels": 384, "padding": "SAME"
       },
       {
-        "type": "conv1d", "repeat" : 2,
-        "kernel_size": [19], "stride": [1],
+        "type": "conv1d", "repeat" : 3,
+        "kernel_size": [17], "stride": [1],
         "num_channels": 512, "padding": "SAME"
       },
       {
-        "type": "conv1d", "repeat" : 2,
-        "kernel_size": [23], "stride": [1],
-        "num_channels": 512, "padding": "SAME"
+        "type": "conv1d", "repeat" : 3,
+        "kernel_size": [21], "stride": [1],
+        "num_channels": 640, "padding": "SAME"
       },
       {
-        "type": "conv1d", "repeat" : 1,
-        "kernel_size": [27], "stride": [1],
+        "type": "conv1d", "repeat" : 3,
+        "kernel_size": [25], "stride": [1],
         "num_channels": 768, "padding": "SAME"
       },
       {
         "type": "conv1d", "repeat" : 1,
-        "kernel_size": [31], "stride": [1],
-        "num_channels": 768, "padding": "SAME"
+        "kernel_size": [29], "stride": [1],
+        "num_channels": 896, "padding": "SAME"
       },
       {
         "type": "conv1d", "repeat" : 1,
         "kernel_size": [1], "stride": [1],
-        "num_channels": 1024, "padding": "SAME" #n_hidden = num_channels
+        "num_channels": 1024, "padding": "SAME"
       },
     ],
 
@@ -99,16 +94,16 @@ base_params = {
     "initializer_params": {
       'uniform': False,
     },
-    "normalization" : "group_norm",
-    #"activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
-    "activation_fn" : glu,
+    "normalization" : "weight_norm",
+    "activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
+    #"activation_fn" : glu,
     "data_format": "channels_last",
   },
 
   "decoder": FullyConnectedCTCDecoder,
   "decoder_params": {
     "initializer": tf.contrib.layers.xavier_initializer,
-    "use_language_model": True,
+    "use_language_model": False,
 
     # params for decoding the sequence with language model
     "beam_width": 512,
@@ -120,6 +115,9 @@ base_params = {
     "lm_binary_path": "language_model/lm.binary",
     "lm_trie_path": "language_model/trie",
     "alphabet_config_path": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
+
+    "normalization" : "weight_norm",
+    "fully_connected_type" : "fully_conv",
   },
   "loss": CTCLoss,
   "loss_params": {},
@@ -128,7 +126,7 @@ base_params = {
 train_params = {
   "data_layer": Speech2TextDataLayer,
   "data_layer_params": {
-    "num_audio_features": 40,
+    "num_audio_features": 64,
     "input_type": "logfbank",
     "vocab_file": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
     "dataset_files": [
@@ -143,7 +141,7 @@ train_params = {
 eval_params = {
   "data_layer": Speech2TextDataLayer,
   "data_layer_params": {
-    "num_audio_features": 40,
+    "num_audio_features": 64,
     "input_type": "logfbank",
     "vocab_file": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
     "dataset_files": [
@@ -156,7 +154,7 @@ eval_params = {
 infer_params = {
   "data_layer": Speech2TextDataLayer,
   "data_layer_params": {
-    "num_audio_features": 40,
+    "num_audio_features": 64,
     "input_type": "logfbank",
     "vocab_file": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
     "dataset_files": [
