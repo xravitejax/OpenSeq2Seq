@@ -6,6 +6,8 @@ from __future__ import unicode_literals
 from six.moves import range
 
 import tensorflow as tf
+import numpy as np
+import math
 
 layers_dict = {
     "conv1d": tf.layers.conv1d,
@@ -158,11 +160,13 @@ def conv_wn_actv(type, name, inputs, filters, kernel_size, activation_fn, stride
     out_dim = filters
 
     # Initialize the weights by decoupling norm and direction
+    #V_std = math.sqrt(4.0 / (np.prod(kernel_size) * in_dim))
+    V_std = 0.01
     V = tf.get_variable(
         '_V',
         shape=kernel_size + [in_dim, out_dim],
         initializer=tf.random_normal_initializer(
-            mean=0, stddev=0.01),
+            mean=0, stddev=V_std),
         trainable=True
     )
     Vlen = len(V.get_shape().as_list())
