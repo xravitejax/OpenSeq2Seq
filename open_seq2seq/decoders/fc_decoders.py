@@ -14,6 +14,7 @@ import tensorflow as tf
 import os
 
 from .decoder import Decoder
+from open_seq2seq.parts.cnns.conv_blocks import *
 
 
 class FullyConnectedDecoder(Decoder):
@@ -84,6 +85,8 @@ class FullyConnectedTimeDecoder(Decoder):
   def get_optional_params():
     return dict(Decoder.get_optional_params(), **{
       'logits_to_outputs_func': None,  # user defined function
+      'fully_connected_type': ['dense', 'fully_conv'],
+      'normalization': [None, 'weight_norm'],
     })
 
   def __init__(self, params, model,
@@ -98,7 +101,11 @@ class FullyConnectedTimeDecoder(Decoder):
       output features.
     * **logits_to_outputs_func** --- function that maps produced logits to
       decoder samples, i.e. actual text sequences.
-    """
+    * **fully_connected_type** --- can be dense layer or convolutions with stride 1  
+      accepts 'dense'(default) or 'fully_conv'.
+    * **normalization** --- normalization between the layers. accepts None (default), 'weight_norm'
+      currently 'weight_norm' is implemented only for convolutions with stride 1.    
+    """ 
     super(FullyConnectedTimeDecoder, self).__init__(params, model, name, mode)
 
   def _decode(self, input_dict):
@@ -122,26 +129,51 @@ class FullyConnectedTimeDecoder(Decoder):
           'samples': logits_to_outputs_func(logits, input_dict)
         }
     """
+    training = (self._mode == "train")
+
     inputs = input_dict['encoder_output']['outputs']
+    outputs_size = self.params['tgt_vocab_size']
     regularizer = self.params.get('regularizer', None)
+    fully_connected_type = self.params.get('fully_connected_type', 'dense')
+    normalization = self.params.get('normalization', None)
 
     batch_size, _, n_hidden = inputs.get_shape().as_list()
-    # reshape from [B, T, A] --> [B*T, A].
-    # Output shape: [n_steps * batch_size, n_hidden]
-    inputs = tf.reshape(inputs, [-1, n_hidden])
 
     # activation is linear by default
-    logits = tf.layers.dense(
-      inputs=inputs,
-      units=self.params['tgt_vocab_size'],
-      kernel_regularizer=regularizer,
-      name='fully_connected',
-    )
-    logits = tf.reshape(
-      logits,
-      [batch_size, -1, self.params['tgt_vocab_size']],
-      name="logits",
-    )
+    if fully_connected_type == 'dense':
+      # reshape from [B, T, A] --> [B*T, A].
+      # Output shape: [n_steps * batch_size, n_hidden]
+      inputs = tf.reshape(inputs, [-1, n_hidden])
+      logits = tf.layers.dense(
+        inputs=inputs,
+        units=outputs_size,
+        kernel_regularizer=regularizer,
+        name='fully_connected',
+      )
+      logits = tf.reshape(
+        logits,
+        [batch_size, -1, self.params['tgt_vocab_size']],
+        name="logits",
+      )
+    elif fully_connected_type == 'fully_conv':
+      if normalization == None:
+        conv_block = conv_actv
+      elif normalization == "weight_norm":
+        conv_block = conv_wn_actv
+      logits = conv_block(
+          type="conv1d",
+          name='fully_connected',
+          inputs=inputs,
+          filters=outputs_size,
+          kernel_size=[1],
+          activation_fn=None,
+          strides=[1],
+          padding="SAME",
+          regularizer=regularizer,
+          training=training,
+          data_format='channels_last',
+      )
+
     # converting to time_major=True shape
     logits = tf.transpose(logits, [1, 0, 2])
 

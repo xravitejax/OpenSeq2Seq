@@ -94,9 +94,9 @@ base_params = {
     "initializer_params": {
       'uniform': False,
     },
-    "normalization" : "batch_norm",
-    #"activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
-    "activation_fn" : glu,
+    "normalization" : "weight_norm",
+    "activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
+    #"activation_fn" : glu,
     "data_format": "channels_last",
   },
 
@@ -115,6 +115,9 @@ base_params = {
     "lm_binary_path": "language_model/lm.binary",
     "lm_trie_path": "language_model/trie",
     "alphabet_config_path": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
+
+    "normalization" : "weight_norm",
+    "fully_connected_type" : "fully_conv",
   },
   "loss": CTCLoss,
   "loss_params": {},
