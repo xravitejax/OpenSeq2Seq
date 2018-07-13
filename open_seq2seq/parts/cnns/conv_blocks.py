@@ -155,7 +155,7 @@ def conv_wn_actv(type, name, inputs, filters, kernel_size, activation_fn, stride
   with tf.variable_scope(name):
     in_size_index = -1 if data_format == 'channels_last' else 1
     in_dim = int(inputs.get_shape()[in_size_index])
-    out_dim = filters
+    out_dim = int(filters)
 
     # Initialize the weights by decoupling norm and direction
     V = tf.get_variable(

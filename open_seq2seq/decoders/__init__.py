@@ -8,3 +8,4 @@ from .rnn_decoders import RNNDecoderWithAttention, \
                           BeamSearchRNNDecoderWithAttention
 from .transformer_decoder import TransformerDecoder
 from .fc_decoders import FullyConnectedCTCDecoder, FullyConnectedDecoder
+from .fc_glu_decoders import FullyConnectedCTCDecoderGLU, FullyConnectedDecoderGLU
