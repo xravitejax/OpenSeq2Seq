@@ -160,8 +160,8 @@ def conv_wn_actv(type, name, inputs, filters, kernel_size, activation_fn, stride
     out_dim = filters
 
     # Initialize the weights by decoupling norm and direction
-    #V_std = math.sqrt(4.0 / (np.prod(kernel_size) * in_dim))
-    V_std = 0.01
+    #V_std = math.sqrt(4.0 / in_dim)
+    V_std = 0.001
     V = tf.get_variable(
         '_V',
         shape=kernel_size + [in_dim, out_dim],
