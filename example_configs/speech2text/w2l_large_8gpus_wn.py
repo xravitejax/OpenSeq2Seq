@@ -15,7 +15,7 @@ base_params = {
   "num_epochs": 50,
 
   "num_gpus": 8,
-  "batch_size_per_gpu": 32,
+  "batch_size_per_gpu": 64,
 
   "save_summaries_steps": 100,
   "print_loss_steps": 10,
@@ -92,8 +92,8 @@ base_params = {
       'uniform': False,
     },
     "normalization" : "weight_norm",
-    "activation_fn" : tf.nn.tanh,
-    #"activation_fn" : glu,
+    #"activation_fn" : tf.nn.tanh,
+    "activation_fn" : glu,
     "data_format": "channels_last",
   },
 
@@ -113,9 +113,9 @@ base_params = {
     "lm_trie_path": "language_model/trie",
     "alphabet_config_path": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
 
-    "normalization" : "weight_norm",
-    "fully_connected_type" : "fully_conv",
-    #"fully_connected_type" : "dense",
+    "normalization" : None,
+    #"fully_connected_type" : "fully_conv",
+    "fully_connected_type" : "dense",
   },
   "loss": CTCLoss,
   "loss_params": {},
