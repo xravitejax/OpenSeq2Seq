@@ -12,7 +12,7 @@ base_model = Speech2Text
 base_params = {
   "random_seed": 0,
   "use_horovod": True,
-  "num_epochs": 30,
+  "num_epochs": 50,
 
   "num_gpus": 8,
   "batch_size_per_gpu": 32,
@@ -24,20 +24,22 @@ base_params = {
   "save_checkpoint_steps": 1000,
   "logdir": "w2l_log_folder",
 
-  "optimizer": "Adam",
+  "optimizer": "Momentum",
+  "optimizer_params": {
+    "momentum": 0.90,
+  },
   "lr_policy": poly_decay,
   "lr_policy_params": {
-    "learning_rate": 0.0002,
+    "learning_rate": 0.1,
     "power": 2.0,
   },
-
 
   "regularizer": tf.contrib.layers.l2_regularizer,
   "regularizer_params": {
     'scale': 0.0005
   },
 
-  "max_grad_norm": 1.0,
+  "max_grad_norm": 5.0,
   "dtype": tf.float32,
 
   "summaries": ['learning_rate', 'variables', 'gradients', 'larc_summaries',
@@ -47,27 +49,27 @@ base_params = {
   "encoder_params": {
     "convnet_layers": [
       {
-        "type": "conv1d", "repeat" : 3,
+        "type": "conv1d", "repeat" : 1,
         "kernel_size": [11], "stride": [1],
         "num_channels": 256, "padding": "SAME"
       },
       {
-        "type": "conv1d", "repeat" : 3,
+        "type": "conv1d", "repeat" : 1,
         "kernel_size": [13], "stride": [1],
         "num_channels": 384, "padding": "SAME"
       },
       {
-        "type": "conv1d", "repeat" : 3,
+        "type": "conv1d", "repeat" : 1,
         "kernel_size": [17], "stride": [1],
         "num_channels": 512, "padding": "SAME"
       },
       {
-        "type": "conv1d", "repeat" : 3,
+        "type": "conv1d", "repeat" : 1,
         "kernel_size": [21], "stride": [1],
         "num_channels": 640, "padding": "SAME"
       },
       {
-        "type": "conv1d", "repeat" : 3,
+        "type": "conv1d", "repeat" : 1,
         "kernel_size": [25], "stride": [1],
         "num_channels": 768, "padding": "SAME"
       },
@@ -83,15 +85,15 @@ base_params = {
       },
     ],
 
-    "dropout_keep_prob": 1.0,
+    "dropout_keep_prob": 0.8,
 
     "initializer": tf.contrib.layers.xavier_initializer,
     "initializer_params": {
       'uniform': False,
     },
     "normalization" : "weight_norm",
-    #"activation_fn" : lambda x: tf.minimum(tf.nn.relu(x), 20.0),
-    "activation_fn" : glu,
+    "activation_fn" : tf.nn.tanh,
+    #"activation_fn" : glu,
     "data_format": "channels_last",
   },
 
@@ -111,8 +113,9 @@ base_params = {
     "lm_trie_path": "language_model/trie",
     "alphabet_config_path": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
 
-    "normalization" : "weight_norm",
-    "fully_connected_type" : "fully_conv",
+    "normalization" : None,
+    #"fully_connected_type" : "fully_conv",
+    "fully_connected_type" : "dense",
   },
   "loss": CTCLoss,
   "loss_params": {},
