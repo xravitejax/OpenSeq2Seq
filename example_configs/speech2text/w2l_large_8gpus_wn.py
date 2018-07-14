@@ -92,8 +92,8 @@ base_params = {
       'uniform': False,
     },
     "normalization" : "weight_norm",
-    "activation_fn" : tf.nn.tanh,
-    #"activation_fn" : glu,
+    #"activation_fn" : tf.nn.tanh,
+    "activation_fn" : glu,
     "data_format": "channels_last",
   },
 
@@ -113,9 +113,9 @@ base_params = {
     "lm_trie_path": "language_model/trie",
     "alphabet_config_path": "open_seq2seq/test_utils/toy_speech_data/vocab.txt",
 
-    "normalization" : None,
-    #"fully_connected_type" : "fully_conv",
-    "fully_connected_type" : "dense",
+    "normalization" : "weight_norm",
+    "fully_connected_type" : "fully_conv",
+    #"fully_connected_type" : "dense",
   },
   "loss": CTCLoss,
   "loss_params": {},
