@@ -92,8 +92,8 @@ base_params = {
       'uniform': False,
     },
     "normalization" : "weight_norm",
-    #"activation_fn" : tf.nn.tanh,
-    "activation_fn" : glu,
+    "activation_fn" : tf.nn.tanh,
+    #"activation_fn" : glu,
     "data_format": "channels_last",
   },
 
