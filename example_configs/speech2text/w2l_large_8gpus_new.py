@@ -8,6 +8,7 @@ from open_seq2seq.optimizers.lr_policies import poly_decay
 from open_seq2seq.utils import glu
 
 base_model = Speech2Text
+ntimes = 1.5 
 
 base_params = {
   "random_seed": 0,
@@ -40,7 +41,8 @@ base_params = {
   },
 
   "max_grad_norm": 5.0,
-  "dtype": tf.float32,
+  "dtype": "mixed",
+  "loss_scaling": "Backoff",
 
   "summaries": ['learning_rate', 'variables', 'gradients', 'larc_summaries',
                 'variable_norm', 'gradient_norm', 'global_gradient_norm'],
@@ -51,44 +53,44 @@ base_params = {
       {
         "type": "conv1d", "repeat" : 3,
         "kernel_size": [11], "stride": [1],
-        "num_channels": 256, "padding": "SAME",
+        "num_channels": 256*ntimes, "padding": "SAME",
         "dropout_keep_prob": 0.8,
       },
       {
         "type": "conv1d", "repeat" : 3,
         "kernel_size": [13], "stride": [1],
-        "num_channels": 384, "padding": "SAME",
-        "dropout_keep_prob": 0.8,
+        "num_channels": 384*ntimes, "padding": "SAME",
+        "dropout_keep_prob": 0.7,
       },
       {
-        "type": "conv1d", "repeat" : 2,
+        "type": "conv1d", "repeat" : 3,
         "kernel_size": [17], "stride": [1],
-        "num_channels": 512, "padding": "SAME",
-        "dropout_keep_prob": 0.8,
+        "num_channels": 512*ntimes, "padding": "SAME",
+        "dropout_keep_prob": 0.7,
       },
       {
-        "type": "conv1d", "repeat" : 2,
+        "type": "conv1d", "repeat" : 3,
         "kernel_size": [21], "stride": [1],
-        "num_channels": 640, "padding": "SAME",
-        "dropout_keep_prob": 0.7,
+        "num_channels": 640*ntimes, "padding": "SAME",
+        "dropout_keep_prob": 0.6,
       },
       {
-        "type": "conv1d", "repeat" : 2,
+        "type": "conv1d", "repeat" : 3,
         "kernel_size": [25], "stride": [1],
-        "num_channels": 768, "padding": "SAME",
-        "dropout_keep_prob": 0.7,
+        "num_channels": 768*ntimes, "padding": "SAME",
+        "dropout_keep_prob": 0.6,
       },
       {
         "type": "conv1d", "repeat" : 1,
         "kernel_size": [29], "stride": [1],
-        "num_channels": 896, "padding": "SAME",
-        "dropout_keep_prob": 0.6,
+        "num_channels": 896*ntimes, "padding": "SAME",
+        "dropout_keep_prob": 0.5,
       },
       {
         "type": "conv1d", "repeat" : 1,
         "kernel_size": [1], "stride": [1],
-        "num_channels": 1024, "padding": "SAME",
-        "dropout_keep_prob": 0.6,
+        "num_channels": 1024*ntimes, "padding": "SAME",
+        "dropout_keep_prob": 0.5,
       },
     ],
 
