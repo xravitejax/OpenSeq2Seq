@@ -27,6 +27,7 @@ class Wave2LetterEncoder(Encoder):
         'normalization': [None, 'batch_norm', 'group_norm', 'weight_norm'],
         'bn_momentum': float,
         'bn_epsilon': float,
+        'use_gated_conv': bool,
     })
 
   def __init__(self, params, model, name="w2l_encoder", mode='train'):
@@ -135,6 +136,9 @@ class Wave2LetterEncoder(Encoder):
       strides = convnet_layers[idx_convnet]['stride']
       padding = convnet_layers[idx_convnet]['padding']
       dropout_keep = convnet_layers[idx_convnet].get('dropout_keep_prob', dropout_keep_prob) if training else 1.0
+
+      if self.params['use_gated_conv']:
+	ch_out = 2*ch_out
 
       for idx_layer in range(layer_repeat):
         conv_feats = conv_block(

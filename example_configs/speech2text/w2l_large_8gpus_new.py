@@ -8,7 +8,7 @@ from open_seq2seq.optimizers.lr_policies import poly_decay
 from open_seq2seq.utils import glu
 
 base_model = Speech2Text
-ntimes = 1.5 
+ntimes = 1.0 
 
 base_params = {
   "random_seed": 0,
@@ -60,37 +60,37 @@ base_params = {
         "type": "conv1d", "repeat" : 3,
         "kernel_size": [13], "stride": [1],
         "num_channels": 384*ntimes, "padding": "SAME",
-        "dropout_keep_prob": 0.7,
+        "dropout_keep_prob": 0.8,
       },
       {
         "type": "conv1d", "repeat" : 3,
         "kernel_size": [17], "stride": [1],
         "num_channels": 512*ntimes, "padding": "SAME",
-        "dropout_keep_prob": 0.7,
+        "dropout_keep_prob": 0.8,
       },
       {
         "type": "conv1d", "repeat" : 3,
         "kernel_size": [21], "stride": [1],
         "num_channels": 640*ntimes, "padding": "SAME",
-        "dropout_keep_prob": 0.6,
+        "dropout_keep_prob": 0.7,
       },
       {
         "type": "conv1d", "repeat" : 3,
         "kernel_size": [25], "stride": [1],
         "num_channels": 768*ntimes, "padding": "SAME",
-        "dropout_keep_prob": 0.6,
+        "dropout_keep_prob": 0.7,
       },
       {
         "type": "conv1d", "repeat" : 1,
         "kernel_size": [29], "stride": [1],
         "num_channels": 896*ntimes, "padding": "SAME",
-        "dropout_keep_prob": 0.5,
+        "dropout_keep_prob": 0.6,
       },
       {
         "type": "conv1d", "repeat" : 1,
         "kernel_size": [1], "stride": [1],
         "num_channels": 1024*ntimes, "padding": "SAME",
-        "dropout_keep_prob": 0.5,
+        "dropout_keep_prob": 0.6,
       },
     ],
 
@@ -103,6 +103,7 @@ base_params = {
     "normalization" : "batch_norm",
     #"activation_fn" : tf.nn.tanh,
     "activation_fn" : glu,
+    "use_gated_conv" : True,
     "data_format": "channels_last",
   },
 
