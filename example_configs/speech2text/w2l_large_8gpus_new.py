@@ -8,7 +8,7 @@ from open_seq2seq.optimizers.lr_policies import poly_decay
 from open_seq2seq.utils import glu
 
 base_model = Speech2Text
-ntimes = 1.0 
+ntimes = 0.5 
 
 base_params = {
   "random_seed": 0,
