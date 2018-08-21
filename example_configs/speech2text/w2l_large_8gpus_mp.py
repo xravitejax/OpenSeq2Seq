@@ -12,18 +12,18 @@ base_model = Speech2Text
 
 base_params = {
     "random_seed": 0,
-    "use_horovod": True,
+    "use_horovod": False,
     "num_epochs": 200,
 
     "num_gpus": 8,
     "batch_size_per_gpu": 64,
     "iter_size": 1,
 
-    "save_summaries_steps": 100,
+    "save_summaries_steps": 10000000,
     "print_loss_steps": 10,
-    "print_samples_steps": 2200,
-    "eval_steps": 2200,
-    "save_checkpoint_steps": 1100,
+    "print_samples_steps": 220000000,
+    "eval_steps": 220000000,
+    "save_checkpoint_steps": 1100000000,
     "logdir": "w2l_log_folder",
 
     "optimizer": "Momentum",

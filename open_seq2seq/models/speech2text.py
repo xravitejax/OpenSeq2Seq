@@ -50,7 +50,7 @@ class Speech2Text(EncoderDecoderModel):
     return super(Speech2Text, self)._create_decoder()
 
   def maybe_print_logs(self, input_values, output_values, training_step):
-    y, len_y = input_values['target_tensors']
+    '''y, len_y = input_values['target_tensors']
     decoded_sequence = output_values
     y_one_sample = y[0]
     len_y_one_sample = len_y[0]
@@ -70,7 +70,8 @@ class Speech2Text(EncoderDecoderModel):
 
     deco_print("Sample WER: {:.4f}".format(sample_wer), offset=4)
     deco_print("Sample target:     " + true_text, offset=4)
-    deco_print("Sample prediction: " + pred_text, offset=4)
+    deco_print("Sample prediction: " + pred_text, offset=4)'''
+    sample_wer = 0.0
     return {
         'Sample WER': sample_wer,
     }
